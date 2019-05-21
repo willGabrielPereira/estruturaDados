@@ -1,0 +1,1 @@
+Terá pelo menos um nó vermelho, pois assim que uma folha é inserida, ela é inserida vermelha. Caso o nó inserido necessite de algum tipo de rotação ou balanceamento, é necessario que algum nó seja trocado para vermelho para que esse nó troque de cor.
