@@ -32,12 +32,23 @@ public class ListaAdjacencia {
 		}
 	}
 	
-	public void inserirAresta(int origem, int destino) {
+	public void inserirArestaFim(int origem, int destino) {
 		vertice v = listaAdj[origem-1];
 		while(v.prox!=null) {
 			v = v.prox;
 		}
 		v.prox = new vertice(destino);
+	}
+	
+	public void inserirArestaInicio(int origem, int destino) {
+		vertice novo = new vertice(destino);
+		novo.prox = listaAdj[origem].prox;
+		listaAdj[origem].prox = novo;
+	}
+	
+	public void inserirArestaBidirecional(int origem, int destino) {
+		this.inserirArestaInicio(origem, destino);
+		this.inserirArestaInicio(destino, origem);
 	}
 	
 	public void removerAresta(int origem, int destino) {
