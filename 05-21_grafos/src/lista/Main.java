@@ -28,8 +28,6 @@ public class Main {
 		
 		l.inserirArestaFim(1, 2);
 		l.inserirArestaFim(2, 1);
-		l.inserirArestaFim(2, 3);
-		l.inserirArestaFim(3, 2);
 		l.inserirArestaFim(1, 4);
 		l.inserirArestaFim(4, 1);
 		l.inserirArestaFim(3, 4);
@@ -39,10 +37,13 @@ public class Main {
 
 		//System.out.println(l.grafoCompleto());
 		
-		int[][] m = l.montarMatrizIncidencia();
+		//int[][] m = l.montarMatrizIncidencia();
 		
 		System.out.println();
 
+		System.out.println(l.buscaPorLargura(1));
+
+		System.out.println();
 	}
 
 }
