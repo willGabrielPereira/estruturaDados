@@ -1,8 +1,8 @@
 package lista;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
 
 import matriz.MatrizAdjacencia;
@@ -13,6 +13,7 @@ public class ListaAdjacencia {
 		int num;
 		int qtdAresta = 0;
 		vertice prox;
+		float distancia;
 		
 		public vertice() {}
 		public vertice(int num) {
@@ -33,7 +34,11 @@ public class ListaAdjacencia {
 	private vertice listaAdj[];
 	private int qtdVertices;
 	
-	//	CONSTRUTOR INSERE AUTOMATICAMENTE NUMEROS DENTRO DA LISTA
+	/**
+	 * Construtor da lista
+	 * gera automaticamente os numeros de cada vertice
+	 * @param qtdVertices quantidade de vertices
+	 */
 	public ListaAdjacencia(int qtdVertices) {
 		this.qtdVertices = qtdVertices;
 		this.listaAdj = new vertice[qtdVertices];
@@ -43,42 +48,110 @@ public class ListaAdjacencia {
 		}
 	}
 	
-	//	INSERE ARESTA NO FINAL DA SEQUENCIA DE LIGAÇÕES
-	public void inserirArestaFim(int origem, int destino) {
+	public vertice getVertice(int vertice) {
+		return listaAdj[vertice];
+	}
+	
+	public vertice[] getLista() {
+		return listaAdj;
+	}
+	
+	public int getQtdVertices() {
+		return qtdVertices;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<qtdVertices; i++) {
+			sb.append("qnt de vertices: "+listaAdj[i].qtdAresta+" | ");
+			sb.append(listaAdj[i].toString());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+	
+
+	/**
+	 * ToString do vertice
+	 * @param vertice
+	 * @return
+	 */
+	public String mostrarVertice(int vertice) {
+		return listaAdj[vertice].toString();
+	}
+
+	
+	/**
+	 * Insere aresta no final da lista de adjacencia de tal vertice
+	 * 
+	 * ex: insere vertice 5, na sequencia 2->3
+	 * 2->3->null
+	 * 2->3->5->null
+	 * 
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 * @param distancia distancia entre as arestas
+	 */
+	public void inserirArestaFim(int origem, int destino, float distancia) {
 		vertice v = listaAdj[origem-1];
 		v.qtdAresta++;
 		while(v.prox!=null) {
 			v = v.prox;
 		}
 		v.prox = new vertice(destino);
+		v.prox.distancia = distancia;
 	}
 	
-	//	INSERE ARESTA NO INICIO DA SEQUENCA DE LIGAÇÕES, PORÉM LOGO ATRÁS DO VÉRTICE PRINCIPAL
-	/*
+	/**
+	 * Insere areta no inicio da lista de adjacencia do vertice
+	 * 
 	 * ex: insere vertice 5, na sequencia 2->3
 	 * 2->3->null
 	 * 2->5->3->null
-	*/
-	public void inserirArestaInicio(int origem, int destino) {
+	 * 
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 * @param distancia distancia entre as arestas
+	 */
+	public void inserirArestaInicio(int origem, int destino, float distancia) {
 		vertice novo = new vertice(destino);
 		novo.prox = listaAdj[origem-1].prox;
 		listaAdj[origem-1].prox = novo;
 		listaAdj[origem-1].qtdAresta++;
+		novo.distancia = distancia;
+	}
+
+
+	/**
+	 * Inserção de aresta bidirecional
+	 * insere vertice no inicio
+	 * 
+	 * @param origem aresta 1
+	 * @param destino aresta 2
+	 * @param distancia distancia entre as arestas
+	 */
+	public void inserirArestaBidirecional(int origem, int destino, int distancia) {
+		this.inserirArestaInicio(origem, destino, distancia);
+		this.inserirArestaInicio(destino, origem, distancia);
 	}
 	
-	//	INSERE ARESTA BIDIRECIONALMENTE PELO INICIO
-	public void inserirArestaBidirecional(int origem, int destino) {
-		this.inserirArestaInicio(origem, destino);
-		this.inserirArestaInicio(destino, origem);
-	}
-	
-	//	REMOVE ARESTA BIDIRECIONALMENTE
+	/**
+	 * Remoção de aresta bidirecional
+	 * @param origem vertice 1
+	 * @param destino vertice 2
+	 */
 	public void removerArestaBidirecional(int origem, int destino) {
 		this.removerAresta(origem, destino);
 		this.removerAresta(destino, origem);
 	}
 	
-	//	REMOVE ARESTA
+	/**
+	 * Remoção de aresta
+	 * 
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 */
 	public void removerAresta(int origem, int destino) {
 		vertice v = listaAdj[origem-1];
 		vertice ant = v;
@@ -95,13 +168,22 @@ public class ListaAdjacencia {
 		}
 	}
 	
-	//	VERIFICA SE A SEQUENCIA DE LIGAÇÕES ESTÁ VAZIA
-	public boolean verticeVazio(int vertice) {		
+	/**
+	 * Verifica se a lista de adjacentes de determinado vertice está vazia
+	 * @param vertice valor do vertice
+	 * @return
+	 */
+	public boolean adjacentesVazio(int vertice) {		
 		return (listaAdj[vertice].prox == null);
 	}
 	
-	//	VERIFICA SE EXISTE ARESTA ENTRE TAL DOIS VERTICES
-	public boolean existeAresta(int origem, int destino) {
+	/**
+	 * Verifica se existe aresta entre tais dois vertices
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 * @return
+	 */
+	public boolean grafoConexo(int origem, int destino) {
 		vertice v = listaAdj[origem-1];
 		while(v!=null){
 			if(v.num == destino) {
@@ -111,8 +193,14 @@ public class ListaAdjacencia {
 		}
 		return false;
 	}
-	
-	//	BUSCA POR LARGURA
+
+	/**
+	 * Busca em largura
+	 * retorna todos os vertices em sequencia
+
+	 * @param raiz vertice inicial
+	 * @return
+	 */
 	public Stack<Integer> buscaPorLargura(int raiz) {
 		Stack<Integer> visitado = new Stack<Integer>();
 		int vertice;
@@ -139,27 +227,91 @@ public class ListaAdjacencia {
 		return visitado;
 	}
 	
-	//	GERA GRAFO COMPLETO
-	public boolean grafoCompleto() {
-		boolean comp = true;
-		for(int i=1; i<=this.qtdVertices; i++) {
-			for(int j=1; j<=this.qtdVertices; j++) {
-				comp = (comp && existeAresta(i, j));
+	public List<Integer> buscaPorProfundidade(int raiz) {
+        List<Integer> visitado = new ArrayList<>();
+       
+        Stack<vertice> pilha = new Stack<>();
+        pilha.add(listaAdj[raiz]);
+        List<Integer> a = new ArrayList<>(listaAdj.length);
+        vertice v = listaAdj[pilha.pop().num];
+        while (v != null) {
+            if (!visitado.contains(v.num)) {
+                visitado.add(v.num);
+                if (v.prox != null) {
+                    vertice vAux= v.prox;
+                    while (vAux.prox != null) {
+                        if (!pilha.contains(vAux.prox)) {
+                            pilha.push(vAux.prox);
+                        }
+                        vAux= vAux.prox;
+                    }
+                    vAux= null;
+                    v = listaAdj[v.prox.num-1];
+                }
+            } else {
+                for (int i = 0; i < listaAdj.length; i++) {
+                    a.add(listaAdj[i].num);
+                }
+                if (visitado.containsAll(a) && v.num == raiz) {
+                   vertice vertice = listaAdj[visitado.get(visitado.size() - 1)];
+                    while (vertice.prox != null) {
+                        if (vertice.prox.num == raiz) {
+                            visitado.add(v.num);
+                            break;
+                        }
+                        vertice = vertice.prox;
+                    }
+                }
+                a.clear();
+                if (!pilha.isEmpty()) {
+                    v = listaAdj[pilha.pop().num-1];
+                } else {
+                    break;
+                }
+            }
+        }
+        return visitado;
+    }
+	
+	/**
+	 * Acha vertice por busca linear
+	 * 
+	 * @param lista lista de adjacencias
+	 * @param vertice vertice a ser encontrado
+	 * @return vertice encontrado ou nulo
+	 */
+	private vertice achaVertice(List<vertice> lista, int vertice) {
+		for(vertice v : lista) {
+			if(v.num == vertice) {
+				return v;
 			}
 		}
-		return comp;
+		return null;
 	}
 	
-	//	CALCULA A QUANTIDADE DE ARESTAS POSSÍVEIS
-	public int qtdArestas(int vertices) {
-		if(vertices <= 2) {
-			return 1;
-		}else {
-			return (vertices-1)+qtdArestas(vertices-1);
-		}
-	}
+	/**
+	 * Verifica se o grafo é um grafo completo
+	 * @return true caso seja, false caso não
+	 */
+	public boolean verificaGrafoCompleto() {
+        boolean comp = true;
+        for (int i = 0; i < listaAdj.length; i++) {
+            for (int j = 1; j < listaAdj.length; j++) {
+                if(i!=j)
+                    comp = grafoConexo(i, j);
+                if(comp == false){
+                    return false;
+                }
+            }
+        }
+        return comp;
+    }
+		
 	
-	//	GERA MATRIZ DE ADJACENCIA
+	/**
+	 * Gera matriz de adjacencias
+	 * @return matriz de adjacencias
+	 */
 	public MatrizAdjacencia montarMatrizAdj() {
 		MatrizAdjacencia maAdj = new MatrizAdjacencia(qtdVertices);
 		
@@ -176,37 +328,47 @@ public class ListaAdjacencia {
 		return maAdj;
 	}
 	
+	public int grafoEuleriano() {
+		ListaAdjacencia la = this;
+		
+		int numVerticesImpares = 0;
+		vertice vImpar = new vertice();
+		for(vertice v : la.getLista()) {
+			if(v.qtdAresta%2==1) {
+				numVerticesImpares++;
+				vImpar = v;
+			}
+		}
+		
+		if(numVerticesImpares!=0 && numVerticesImpares!=2) {
+			return -1;
+		}
+		
+		while(la.qtdVertices!=0) {
+			vertice v = la.listaAdj[0];
+		}
+		
+		return -1;
+	}
+	
 	//	GERA MATRIZ DE INCIDENCIA
 	public int[][] montarMatrizIncidencia(){
-		MatrizAdjacencia m = montarMatrizAdj();
-		return m.montarMatrizIncidencia();
+		return null;
 	}
 	
-	//	MESMA FUNÇÃO QUE TOSTRING
-	public String mostrarLista() {
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<qtdVertices; i++) {
-			sb.append("qnt: "+listaAdj[i].qtdAresta+" | ");
-			sb.append(listaAdj[i].toString());
-			sb.append("\n");
+	//PRIVATES
+	
+	private vertice voltaVertice(Stack<Integer> pilha) {
+		ArrayList<Integer> v = new ArrayList<Integer>(pilha);
+		
+		return achaVertice(Arrays.asList(listaAdj), v.get(v.size()-3));
+	}
+	
+	private int qtdArestas(int vertices) {
+		if(vertices <= 2) {
+			return 1;
+		}else {
+			return (vertices-1)+qtdArestas(vertices-1);
 		}
-		return sb.toString();
-	}
-	
-	//	TOSTRING DO VERTICE
-	public String mostrarVertice(int vertice) {
-		return listaAdj[vertice].toString();
-	}
-	
-	public vertice getVertice(int vertice) {
-		return listaAdj[vertice];
-	}
-	
-	public vertice[] getLista() {
-		return listaAdj;
-	}
-	
-	public int getQtdVertices() {
-		return qtdVertices;
 	}
 }

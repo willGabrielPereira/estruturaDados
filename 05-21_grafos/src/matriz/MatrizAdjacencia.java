@@ -4,69 +4,85 @@ public class MatrizAdjacencia {
 	private int qtdVertices;
 	private int[][] G;
 	
+	/**
+	 * Construtor da matriz
+	 * @param qtdVertices quantidade de vertices
+	 */
 	public MatrizAdjacencia(int qtdVertices) {
 		this.qtdVertices = qtdVertices;
 		this.G = new int[qtdVertices][qtdVertices];
 	}
 	
+	/**
+	 * Insere aresta
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 */
 	public void inserirAresta(int origem, int destino) {
 		this.G[origem-1][destino-1] = 1;
 	}
 	
+	/**
+	 * Insere aresta bidirecional
+	 * @param origem vertice 1
+	 * @param destino vertice 2
+	 */
 	public void inserirArestaBidirecional(int origem, int destino) {
 		this.G[origem-1][destino-1] = 1;
 		this.G[destino-1][origem-1] = 1;
 	}
 	
+	/**
+	 * Remove aresta
+	 * @param origem vertice inicial
+	 * @param destino vertice final
+	 */
 	public void removerAresta(int origem, int destino) {
 		this.G[origem-1][destino-1] = 0;
 	}
 	
+	/**
+	 * Remove aresta bidirecional
+	 * @param origem vertice 1
+	 * @param destino vertice 2
+	 */
 	public void removerArestaBidirecional(int origem, int destino) {
 		this.G[origem-1][destino-1] = 0;
 		this.G[destino-1][origem-1] = 0;
 	}
 	
-	public int qtdArestas(int vertices) {
-		if(vertices <= 2) {
+	/**
+	 * Calcula quantidade de arestas de determinado vertice
+	 * @param vertices
+	 * @return
+	 */
+	public int qtdArestas(int vertice) {
+		if(vertice <= 2) {
 			return 1;
 		}else {
-			return (vertices-1)+qtdArestas(vertices-1);
+			return (vertice-1)+qtdArestas(vertice-1);
 		}
 	}
 	
 	public int[][] montarMatrizIncidencia(){
-		int arest = qtdArestas(qtdVertices);
-		int[][] mInc = new int[arest][qtdVertices];
-		
-		for(int inc=0; inc<arest; inc++) {
-			
-			for(int i=0; i<qtdVertices; i++) {
-				for(int j=0; j<qtdVertices; j++) {
-					if(G[i][j] == 1) {
-						mInc[inc][i]=1;
-						mInc[inc][j]=1;
-					}
-				}
-			}
-			
-		}
-		
-		return mInc;
+		return null;
 	}
 	
-	public void mostrarMatriz() {
-		System.out.print("	 ");
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("	 ");
 		for(int i=0; i<qtdVertices; i++) {
-			System.out.print((i+1)+"	");
+			sb.append((i+1)+"	");
 		}
-		System.out.println();
+		sb.append("\n");
 		for(int i=0; i<qtdVertices; i++) {
-			System.out.print((i+1)+"	|");
+			sb.append((i+1)+"	|");
 			for(int j=0; j<qtdVertices; j++) {
-				System.out.print(G[i][j]+"	");
+				sb.append(G[i][j]+"	");
 			}
-			System.out.print("|\n");
+			sb.append("|\n");
 		}
+		return sb.toString();
 	}
 }

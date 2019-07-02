@@ -12,7 +12,7 @@ public class Main {
 		matriz.inserirAresta(5, 6);
 		matriz.inserirAresta(4, 6);
 		
-		matriz.mostrarMatriz();
+		System.out.println(matriz.toString());
 	}
 
 }
