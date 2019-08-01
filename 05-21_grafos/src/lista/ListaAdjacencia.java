@@ -78,7 +78,7 @@ public class ListaAdjacencia {
 	 * @return
 	 */
 	public String mostrarVertice(int vertice) {
-		return listaAdj[vertice].toString();
+		return listaAdj[vertice-1].toString();
 	}
 
 	
@@ -231,9 +231,9 @@ public class ListaAdjacencia {
         List<Integer> visitado = new ArrayList<>();
        
         Stack<vertice> pilha = new Stack<>();
-        pilha.add(listaAdj[raiz]);
+        pilha.add(listaAdj[raiz-1]);
         List<Integer> a = new ArrayList<>(listaAdj.length);
-        vertice v = listaAdj[pilha.pop().num];
+        vertice v = listaAdj[pilha.pop().num-1];
         while (v != null) {
             if (!visitado.contains(v.num)) {
                 visitado.add(v.num);
@@ -295,7 +295,7 @@ public class ListaAdjacencia {
 	 */
 	public boolean verificaGrafoCompleto() {
         boolean comp = true;
-        for (int i = 0; i < listaAdj.length; i++) {
+        for (int i = 1; i < listaAdj.length; i++) {
             for (int j = 1; j < listaAdj.length; j++) {
                 if(i!=j)
                     comp = grafoConexo(i, j);
@@ -328,32 +328,21 @@ public class ListaAdjacencia {
 		return maAdj;
 	}
 	
+	// CALCULA SE É EULERIANO; 1=EULERIANO, 0=SEMI-EULERIANO, -1=NÃO EULERIANO
 	public int grafoEuleriano() {
-		ListaAdjacencia la = this;
-		
-		int numVerticesImpares = 0;
-		vertice vImpar = new vertice();
-		for(vertice v : la.getLista()) {
-			if(v.qtdAresta%2==1) {
-				numVerticesImpares++;
-				vImpar = v;
+		int cont = 1;
+		if(listaAdj.length%2!=0) {
+			cont--;
+		}
+		for(vertice v : listaAdj) {
+			if(v.qtdAresta%2!=0) {
+				cont--;
+				break;
 			}
 		}
 		
-		if(numVerticesImpares!=0 && numVerticesImpares!=2) {
-			return -1;
-		}
-		
-		while(la.qtdVertices!=0) {
-			vertice v = la.listaAdj[0];
-		}
-		
-		return -1;
-	}
-	
-	//	GERA MATRIZ DE INCIDENCIA
-	public int[][] montarMatrizIncidencia(){
-		return null;
+		return cont;
+
 	}
 	
 	//PRIVATES

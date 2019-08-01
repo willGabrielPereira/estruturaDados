@@ -64,10 +64,6 @@ public class MatrizAdjacencia {
 		}
 	}
 	
-	public int[][] montarMatrizIncidencia(){
-		return null;
-	}
-	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

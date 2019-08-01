@@ -1,7 +1,4 @@
-d)A partir da matriz ou lista de adjacências gerar a matriz de incidência
 f)Após escolher se o grafo é direcionado ou não, perguntar se o grafo é ponderado. 
 Caso sim, perguntar o peso de cada aresta.
 
-
 h)Verificar se um grafo é euleriano, semieuleriano ou não euleriano
-i)Verificar se um grafo é Hamiltoniano, semi-hamiltoniano ou não hamiltoniano
